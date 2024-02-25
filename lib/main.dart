@@ -1,5 +1,6 @@
 import 'package:chatapp/repositoties/message_repository.dart';
 import 'package:chatapp/services/api_client.dart';
+import 'package:chatapp/services/web_socket_client.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
@@ -10,7 +11,12 @@ final apiClient = ApiClient(tokenProvider: ()  async {
   return '';
 });
 
-final messageRepository = MessageRepository(apiClient: apiClient);
+final webSocketClient = WebsocketClient();
+
+final messageRepository = MessageRepository(
+  apiClient: apiClient, 
+  webSocketClient: webSocketClient
+);
 
 
 void main() {

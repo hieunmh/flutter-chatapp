@@ -30,6 +30,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     super.dispose();
   }
 
+  void _sendMessage() async {
+    final message = Message(
+      chatRoomId: widget.chatRoom.id, 
+      senderUserId: userId1, 
+      receiverUserId: userId2, 
+      content: messageController.text,
+      createdAt: DateTime.now()
+    );
+
+    setState(() {
+      messages.add(message);
+    });
+
+    await messageRepository.createMessage(message);
+    messageController.clear();
+  }
+
   _loadMessages() async {
     final _messages = await messageRepository.fetchMessages(widget.chatRoom.id);
 
@@ -133,6 +150,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         suffixIcon: IconButton(
                           onPressed: () {
                             // send a message and clear the controller
+                            _sendMessage();
                           },
                           icon: const Icon(Icons.send)
                         )
