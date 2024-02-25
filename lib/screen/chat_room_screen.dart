@@ -19,9 +19,25 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   final List<Message> messages = [];
 
   @override
+  void initState() {
+    _loadMessages();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     messageController.dispose();
     super.dispose();
+  }
+
+  _loadMessages() async {
+    final _messages = await messageRepository.fetchMessages(widget.chatRoom.id);
+
+    _messages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
+    setState(() {
+      messages.addAll(_messages);
+    });
   }
 
   @override
